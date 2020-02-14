@@ -14,6 +14,8 @@ class Dirext {
     this.options = this.set.bind(this, 'OPTIONS');
     this.trace = this.set.bind(this, 'TRACE');
   }
+  // create a helper function that takes each segment of route and creates an array of key value pairs
+  // edge case for global middleware
 
   // method to add routes for router to recognicse
   set(method, url, ...middlewareFuncs) {
@@ -26,6 +28,7 @@ class Dirext {
 
   // method to add middleware to routes without specific http req method
   use(url, ...middlewareFuncs) {
+    if (typeof url !== 'string') url = 'global';
     // array of middleware funcs
     const middleware = [...middlewareFuncs];
     // push obect with url, method, and middleware to routes
@@ -42,6 +45,11 @@ class Dirext {
     const helperSlice = (url) => {
 
     };
+    // check if the two arrays are the same length, if they aren't, continue with loop
+    // confirm that all route segment objects hold the same value
+    // if there is a parameter in the url stored in routes, the value at that index doesn't matter
+    // if they do match, push middleware to middleware array
+    // if we find a route with a global url before we find our matching route, push that middleware to array
     const middleware = [];
     for (let i = 0; i < this.routes.length; i += 1) {
       const current = this.routes[i];

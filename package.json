@@ -1,0 +1,22 @@
+{
+  "name": "dirext",
+  "version": "1.0.0",
+  "description": "A lightweight router solution for Node.js",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dirext-js/dirext.git"
+  },
+  "author": "Sara Powers, Alex Kang, Izumi Sato, Eli Gallipoli",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dirext-js/dirext/issues"
+  },
+  "homepage": "https://github.com/dirext-js/dirext#readme"
+}

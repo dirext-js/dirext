@@ -15,7 +15,7 @@ class Dirext {
     this.trace = this.set.bind(this, 'TRACE');
   }
 
-  // create a helper function that takes each segment of route and creates an array of key value pairs
+  // a helper function that takes each segment of route and creates an array of key value pairs
   // edge case for global middleware
   static routeSplitter(url) {
     // split route on each / then map through elements

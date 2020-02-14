@@ -15,14 +15,20 @@ class Dirext {
     this.trace = this.set.bind(this, 'TRACE');
   }
 
+  // method to add routes for router to recognicse
   set(method, url, ...middlewareFuncs) {
+    // array of middleware functions
     const middleware = [...middlewareFuncs];
+    // push object with url, method, and middlware to routes
     this.routes.push({ url, method, middleware });
     return this;
   }
 
+  // method to add middleware to routes without specific http req method
   use(url, ...middlewareFuncs) {
+    // array of middleware funcs
     const middleware = [...middlewareFuncs];
+    // push obect with url, method, and middleware to routes
     this.routes.push({ url, method: '', middleware });
     return this;
   }
@@ -34,11 +40,11 @@ class Dirext {
   find(url, method) {
     // helper function for slicing urls
     const helperSlice = (url) => {
-        
-    }
+
+    };
     const middleware = [];
     for (let i = 0; i < this.routes.length; i += 1) {
-      let current = this.routes[i]
+      const current = this.routes[i];
     }
   }
 }

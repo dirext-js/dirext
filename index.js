@@ -17,11 +17,9 @@ class Dirext {
     this.trace = this.set.bind(this, 'TRACE');
   }
 
-
   // a helper function that takes each segment of route and creates an array of key value pairs
   // edge case for global middleware
   routeSplitter(url) {
-    console.log('the url in routeSplitter is:', url);
     if (url === '/' || url === '*' || url === 'global') return [{ route: url }];
     // split route on each / then map through elements
     const route = url.split('/').splice(1).map((elem) => {
@@ -47,9 +45,7 @@ class Dirext {
   }
 
 
-  compareRoutes(currentRoute, splitRoute, loopLength) {
-    if (!loopLength) loopLength = currentRoute.url.length;
-    console.log('loop length in compareRoutes is:', loopLength);
+  compareRoutes(currentRoute, splitRoute, loopLength = currentRoute.url.length) {
     const response = {
       match: true,
     };
@@ -81,7 +77,6 @@ class Dirext {
         return response;
       }
     }
-    console.log('response in compareRoutes:', response);
     return response;
   }
 
@@ -110,7 +105,6 @@ class Dirext {
   find(method, url) {
     // parse input route using routeSplitter helper function
     const splitRoute = this.routeSplitter(url);
-    console.log('the split route is: ', splitRoute);
     // initialize empty array to push middleware to
     const response = {
       middleware: [],
@@ -150,7 +144,6 @@ class Dirext {
           if (result.params) response.params = { ...result.params };
         }
       } else {
-        console.log('hitting the wildcard else line 152');
         // loop through currentRoute and compare each index with splitRoute
         const result = this.compareRoutes(currentRoute, splitRoute);
         if (result.match) {

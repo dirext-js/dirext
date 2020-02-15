@@ -49,6 +49,7 @@ class Dirext {
 
   compareRoutes(currentRoute, splitRoute, loopLength) {
     if (!loopLength) loopLength = currentRoute.url.length;
+    console.log('loop length in compareRoutes is:', loopLength);
     const response = {
       match: true,
     };
@@ -57,6 +58,8 @@ class Dirext {
       if (currentRoute.url[j].route && splitRoute[j].route) {
         if (currentRoute.url[j].route === splitRoute[j].route) {
           continue;
+        } else if (currentRoute.url[j].route === '*' && splitRoute[j].route !== undefined) {
+          return response;
         } else {
           response.match = false;
           return response;
@@ -71,8 +74,8 @@ class Dirext {
         // delete route obj now that we know it's a param
         delete splitRoute[j].route;
         // store new param object on response
-
         continue;
+        // logic for handling wildcard routes
       } else {
         response.match = false;
         return response;
@@ -104,7 +107,6 @@ class Dirext {
     return this;
   }
 
-  // dirext.post('eli/)
   find(method, url) {
     // parse input route using routeSplitter helper function
     const splitRoute = this.routeSplitter(url);
@@ -142,21 +144,21 @@ class Dirext {
       // otherwise compare the length of the two routes
       else if (currentRoute.url.length === loopLength && currentRoute.method === method) {
         // if they do match, push middleware to middleware array
-        const result = this.compareRoutes(currentRoute, splitRoute, loopLength);
+        const result = this.compareRoutes(currentRoute, splitRoute, loopLength); // set default parameter for loop length? don't use it if it's a wildcard?
         if (result.match) {
           response.middleware.push(...currentRoute.middleware);
           if (result.params) response.params = { ...result.params };
         }
       } else {
+        console.log('hitting the wildcard else line 152');
         // loop through currentRoute and compare each index with splitRoute
-        for (let j = 0; j < currentRoute.length; j += 1) {
-          if (currentRoute.url[j].route === splitRoute[j].route) {
-            continue;
-          }
+        const result = this.compareRoutes(currentRoute, splitRoute);
+        if (result.match) {
+          response.middleware.push(...currentRoute.middleware);
+          if (result.params) response.params = { ...result.params };
         }
       }
     }
-    // console.log('the middleware array is: ', middleware);
     return response;
   }
 }

@@ -17,6 +17,7 @@ class Dirext {
     this.trace = this.set.bind(this, 'TRACE');
   }
 
+
   // a helper function that takes each segment of route and creates an array of key value pairs
   // edge case for global middleware
   routeSplitter(url) {
@@ -45,25 +46,42 @@ class Dirext {
     return route;
   }
 
+
   compareRoutes(currentRoute, splitRoute, loopLength) {
+    const response = {
+      match: true,
+    };
     for (let j = 0; j < loopLength; j += 1) {
       // confirm that all route segment objects hold the same value
       if (currentRoute.url[j].route && splitRoute[j].route) {
         if (currentRoute.url[j].route === splitRoute[j].route) {
           continue;
         } else {
-          return false;
+          response.match = false;
+          return response;
         }
       } else if (currentRoute.url[j].param && splitRoute[j].route) {
+        // if there is a param in url route, save variable and value to params obj
+        const variable = currentRoute.url[j].param;
+        const value = splitRoute[j].route;
+        splitRoute[j].params = { [variable]: value };
+        if (!response.params) response.params = {};
+        response.params[variable] = value;
+        // delete route obj now that we know it's a param
+        delete splitRoute[j].route;
+        // store new param object on response
+
         continue;
       } else {
-        return false;
+        response.match = false;
+        return response;
       }
     }
-    return true;
+    console.log('response in compareRoutes:', response);
+    return response;
   }
 
-  // method to add routes for router to recognicse
+  // method to add routes for router to recognize
   set(method, url, ...middlewareFuncs) {
     // array of middleware functions
     const middleware = [...middlewareFuncs];
@@ -80,54 +98,58 @@ class Dirext {
     }
     // array of middleware funcs
     const middleware = [...middlewareFuncs];
-    console.log('the middleware in use is:', middleware);
     // push obect with url, method, and middleware to routes
     this.routes.push({ url: this.routeSplitter(url), method: '', middleware });
     return this;
   }
 
   // dirext.post('eli/)
-  find(url, method) {
+  find(method, url) {
     // parse input route using routeSplitter helper function
     const splitRoute = this.routeSplitter(url);
     console.log('the split route is: ', splitRoute);
     // initialize empty array to push middleware to
-    const middleware = [];
+    const response = {
+      middleware: [],
+      params: {},
+    };
 
     // initialize loopLength variable
     let loopLength;
     // check if input route contains a query at the end
     if (splitRoute[splitRoute.length - 1].query) {
+      // assign query object to response object
+      response.query = splitRoute[splitRoute.length - 1].query;
+      // don't compare last obj in route array
       loopLength = splitRoute.length - 1;
     } else {
       loopLength = splitRoute.length;
     }
-    // check if the two arrays are the same length, if they aren't, continue with loop
     for (let i = 0; i < this.routes.length; i += 1) {
       const currentRoute = this.routes[i];
       // check if the route at i has a url of "global"
-      console.log(`current route at index ${i} is ${JSON.stringify(currentRoute)}`);
       if (currentRoute.url[0].route === 'global') {
-        console.log('in the global conditional pusherrrr line 110');
         // if it does, push it to the middleware
-        middleware.push(...currentRoute.middleware);
+        response.middleware.push(...currentRoute.middleware);
       }
       // check if the route at index i has a method
-      if (!currentRoute.method && currentRoute.url[0].route !== 'global') {
+      else if (!currentRoute.method) {
         // if there is no method, push middleware and break out of the loop
-        middleware.push(...currentRoute.middleware);
-        console.log('about to breakkkkkkk line 117');
+        response.middleware.push(...currentRoute.middleware);
         break;
       }
       // otherwise compare the length of the two routes
       if (currentRoute.url.length === loopLength && currentRoute.method === method) {
         // if they do match, push middleware to middleware array
-        const match = this.compareRoutes(currentRoute, splitRoute, loopLength);
-        if (match) middleware.push(...currentRoute.middleware);
+        const result = this.compareRoutes(currentRoute, splitRoute, loopLength);
+        if (result.match) {
+          response.middleware.push(...currentRoute.middleware);
+          if (result.params) response.params = { ...result.params };
+        }
       }
     }
     // console.log('the middleware array is: ', middleware);
-    return middleware;
+    return response;
   }
 }
 

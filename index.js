@@ -48,6 +48,7 @@ class Dirext {
 
 
   compareRoutes(currentRoute, splitRoute, loopLength) {
+    if (!loopLength) loopLength = currentRoute.url.length;
     const response = {
       match: true,
     };
@@ -139,12 +140,19 @@ class Dirext {
         break;
       }
       // otherwise compare the length of the two routes
-      if (currentRoute.url.length === loopLength && currentRoute.method === method) {
+      else if (currentRoute.url.length === loopLength && currentRoute.method === method) {
         // if they do match, push middleware to middleware array
         const result = this.compareRoutes(currentRoute, splitRoute, loopLength);
         if (result.match) {
           response.middleware.push(...currentRoute.middleware);
           if (result.params) response.params = { ...result.params };
+        }
+      } else {
+        // loop through currentRoute and compare each index with splitRoute
+        for (let j = 0; j < currentRoute.length; j += 1) {
+          if (currentRoute.url[j].route === splitRoute[j].route) {
+            continue;
+          }
         }
       }
     }

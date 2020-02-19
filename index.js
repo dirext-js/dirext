@@ -6,15 +6,15 @@ class Dirext {
     this.routes = [];
 
     // binding all HTTP req methods as methods on Dirext using bind and our set method
-    this.get = this.set.bind(this, 'GET');
-    this.post = this.set.bind(this, 'POST');
-    this.put = this.set.bind(this, 'PUT');
-    this.patch = this.set.bind(this, 'PATCH');
-    this.delete = this.set.bind(this, 'DELETE');
-    this.head = this.set.bind(this, 'HEAD');
-    this.connect = this.set.bind(this, 'CONNECT');
-    this.options = this.set.bind(this, 'OPTIONS');
-    this.trace = this.set.bind(this, 'TRACE');
+    this.get = this.set.bind(null, 'GET');
+    this.post = this.set.bind(null, 'POST');
+    this.put = this.set.bind(null, 'PUT');
+    this.patch = this.set.bind(null, 'PATCH');
+    this.delete = this.set.bind(null, 'DELETE');
+    this.head = this.set.bind(null, 'HEAD');
+    this.connect = this.set.bind(null, 'CONNECT');
+    this.options = this.set.bind(null, 'OPTIONS');
+    this.trace = this.set.bind(null, 'TRACE');
   }
 
   // a helper function that takes each segment of route and creates an array of key value pairs

@@ -1,0 +1,19 @@
+{
+  "name": "dirext-js",
+  "version": "0.0.1",
+  "description": "A lightweight routing solution for Node.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dirext-js/dirext.git"
+  },
+  "author": "Eli Gallipoli, Alex Kang, Izumi Sato, Sara Powers",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dirext-js/dirext/issues"
+  },
+  "homepage": "https://github.com/dirext-js/dirext#readme"
+}

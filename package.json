@@ -15,5 +15,11 @@
   "bugs": {
     "url": "https://github.com/dirext-js/dirext/issues"
   },
-  "homepage": "https://github.com/dirext-js/dirext#readme"
+  "homepage": "https://github.com/dirext-js/dirext#readme",
+  "keywords": [
+    "router", 
+    "routing", 
+    "middleware", 
+    "route"
+  ]
 }

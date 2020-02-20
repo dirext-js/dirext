@@ -1,5 +1,5 @@
 # dirext
- 🚧 A lightweight router solution for Node.js. 🚧
+ 🚧 A lightweight routing solution for Node.js. 🚧
 
 ## **Install dirext** 
 `  npm i dirext-js`

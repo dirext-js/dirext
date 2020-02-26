@@ -143,7 +143,7 @@ class Dirext {
           response.middleware.push(...currentRoute.middleware);
           if (result.params) response.params = { ...result.params };
         }
-      } else {
+      } else if (currentRoute.method === method) {
         // loop through currentRoute and compare each index with splitRoute
         const result = this.compareRoutes(currentRoute, splitRoute);
         if (result.match) {

@@ -1,5 +1,3 @@
-
-
 ![DirextLogo](https://i.ibb.co/3CCS8g5/dirextlogo.png)
 
  🚧 A lightweight routing solution for Node.js. 🚧

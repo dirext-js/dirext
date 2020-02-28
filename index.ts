@@ -19,7 +19,7 @@ class Dirext {
 
   // a helper function that takes each segment of route and creates an array of key value pairs
   // edge case for global middleware
-  routeSplitter(url) {
+  routeSplitter(url: string) {
     if (url === '/' || url === '*' || url === 'global') return [{ route: url }];
     // split route on each / then map through elements
     const route = url.split('/').splice(1).map((elem) => {
@@ -45,7 +45,7 @@ class Dirext {
   }
 
 
-  compareRoutes(currentRoute, splitRoute, loopLength = currentRoute.url.length) {
+  compareRoutes(currentRoute: string, splitRoute: string, loopLength: number) {
     const response = {
       match: true,
     };
@@ -81,7 +81,7 @@ class Dirext {
   }
 
   // method to add routes for router to recognize
-  set(method, url, ...middlewareFuncs) {
+  set(method: string, url: string, ...middlewareFuncs: any) {
     // array of middleware functions
     const middleware = [...middlewareFuncs];
     // push object with url, method, and middlware to routes
@@ -90,7 +90,7 @@ class Dirext {
   }
 
   // method to add middleware to routes without specific http req method
-  use(url, ...middlewareFuncs) {
+  use(url: string, ...middlewareFuncs: any) {
     if (typeof url !== 'string') {
       middlewareFuncs = [url];
       url = 'global';
@@ -102,7 +102,7 @@ class Dirext {
     return this;
   }
 
-  find(method, url) {
+  find(method: string, url: string) {
     // parse input route using routeSplitter helper function
     const splitRoute = this.routeSplitter(url);
     // initialize empty array to push middleware to
@@ -145,7 +145,7 @@ class Dirext {
         }
       } else if (currentRoute.method === method) {
         // loop through currentRoute and compare each index with splitRoute
-        const result = this.compareRoutes(currentRoute, splitRoute);
+        const result = this.compareRoutes(currentRoute, splitRoute, loopLength);
         if (result.match) {
           response.middleware.push(...currentRoute.middleware);
           if (result.params) response.params = { ...result.params };

@@ -3,6 +3,7 @@
   "version": "0.0.2",
   "description": "A lightweight routing solution for Node.js",
   "main": "index.js",
+  "types": "index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -17,9 +18,16 @@
   },
   "homepage": "https://github.com/dirext-js/dirext#readme",
   "keywords": [
-    "router", 
-    "routing", 
-    "middleware", 
+    "router",
+    "routing",
+    "middleware",
     "route"
-  ]
+  ],
+  "dependencies": {
+    "@types/node": "^13.7.7"
+  },
+  "devDependencies": {
+    "typescript": "^3.8.2"
+  },
+  "prepublish": "tsc"
 }

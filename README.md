@@ -32,7 +32,7 @@ Any uppercase valid HTTP method:
 Any endpoint. Dirext supports:
 * static - `/home`
 * parameters - `/home/:user`
-* nested paramters - `/home/:user/posts/:id`
+* nested parameters - `/home/:user/posts/:id`
 * queries - `/home/?user`
 * wildcards - `/home/*`
 

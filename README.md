@@ -74,7 +74,7 @@ app.use(globalMiddleware);
 app.use('/home', homeMiddleware);
 app.get('/home', getHomeMiddleware);
 app.post('/home/:user', postUserMiddleware);
-app.delete('/home/?user/posts/:id', deleteMiddleware);
+app.delete('/home/?user=user1/posts/:id', deleteMiddleware);
 
 app.find('GET', '/home');
 // -> { middleware: [globalMiddleware, homeMiddleware, getHomeMiddleware] }
@@ -82,7 +82,7 @@ app.find('GET', '/home');
 app.find('POST', '/home/user1');
 // -> { middleware: [globalMiddleware, postUserMiddleware], params: { user: user1 } }
 
-app.find('DELETE', '/home/user=user1/posts/2');
+app.find('DELETE', '/home/?user=user1/posts/2');
 // -> { middleware: [globalMiddleware, deleteMiddleware], params: { id: 2 }, queries: { user: user1 } }
 ```
 

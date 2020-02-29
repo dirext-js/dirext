@@ -1,11 +1,26 @@
-export {};
+
+var __assign = (this && this.__assign) || function () {
+  __assign = Object.assign || function (t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+      s = arguments[i];
+      for (const p in s) { if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p]; }
+    }
+    return t;
+  };
+  return __assign.apply(this, arguments);
+};
+const __spreadArrays = (this && this.__spreadArrays) || function () {
+  for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+  for (var r = Array(s), k = 0, i = 0; i < il; i++) for (let a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++) r[k] = a[j];
+  return r;
+};
+exports.__esModule = true;
 /* eslint-disable class-methods-use-this */
 /* eslint-disable no-continue */
-class Dirext {
-  constructor() {
+const Dirext = /** @class */ (function () {
+  function Dirext() {
     // an array of routes
     this.routes = [];
-
     // binding all HTTP req methods as methods on Dirext using bind and our set method
     this.get = this.set.bind(null, 'GET');
     this.post = this.set.bind(null, 'POST');
@@ -17,10 +32,9 @@ class Dirext {
     this.options = this.set.bind(null, 'OPTIONS');
     this.trace = this.set.bind(null, 'TRACE');
   }
-
   // a helper function that takes each segment of route and creates an array of key value pairs
   // edge case for global middleware
-  routeSplitter(url: string) {
+  Dirext.prototype.routeSplitter = function (url) {
     if (url === '/' || url === '*' || url === 'global') return [{ route: url }];
     // split route on each / then map through elements
     const route = url.split('/').splice(1).map((elem) => {
@@ -43,10 +57,9 @@ class Dirext {
     });
     // return array of routes
     return route;
-  }
-
-
-  compareRoutes(currentRoute: string, splitRoute: string, loopLength: number) {
+  };
+  Dirext.prototype.compareRoutes = function (currentRoute, splitRoute, loopLength) {
+    let _a;
     const response = {
       match: true,
     };
@@ -65,7 +78,7 @@ class Dirext {
         // if there is a param in url route, save variable and value to params obj
         const variable = currentRoute.url[j].param;
         const value = splitRoute[j].route;
-        splitRoute[j].params = { [variable]: value };
+        splitRoute[j].params = (_a = {}, _a[variable] = value, _a);
         if (!response.params) response.params = {};
         response.params[variable] = value;
         // delete route obj now that we know it's a param
@@ -79,31 +92,38 @@ class Dirext {
       }
     }
     return response;
-  }
-
+  };
   // method to add routes for router to recognize
-  set(method: string, url: string, ...middlewareFuncs: any) {
+  Dirext.prototype.set = function (method, url) {
+    const middlewareFuncs = [];
+    for (let _i = 2; _i < arguments.length; _i++) {
+      middlewareFuncs[_i - 2] = arguments[_i];
+    }
     // array of middleware functions
-    const middleware = [...middlewareFuncs];
+    const middleware = __spreadArrays(middlewareFuncs);
     // push object with url, method, and middlware to routes
     this.routes.push({ url: this.routeSplitter(url), method, middleware });
     return this;
-  }
-
+  };
   // method to add middleware to routes without specific http req method
-  use(url: string, ...middlewareFuncs: any) {
+  Dirext.prototype.use = function (url) {
+    let middlewareFuncs = [];
+    for (let _i = 1; _i < arguments.length; _i++) {
+      middlewareFuncs[_i - 1] = arguments[_i];
+    }
     if (typeof url !== 'string') {
       middlewareFuncs = [url];
       url = 'global';
     }
     // array of middleware funcs
-    const middleware = [...middlewareFuncs];
+    const middleware = __spreadArrays(middlewareFuncs);
     // push obect with url, method, and middleware to routes
     this.routes.push({ url: this.routeSplitter(url), method: '', middleware });
     return this;
-  }
-
-  find(method: string, url: string) {
+  };
+  Dirext.prototype.find = function (method, url) {
+    let _a; let _b; let _c; let
+      _d;
     // parse input route using routeSplitter helper function
     const splitRoute = this.routeSplitter(url);
     // initialize empty array to push middleware to
@@ -111,7 +131,6 @@ class Dirext {
       middleware: [],
       params: {},
     };
-
     // initialize loopLength variable
     let loopLength;
     // check if input route contains a query at the end
@@ -128,33 +147,33 @@ class Dirext {
       // check if the route at i has a url of "global"
       if (currentRoute.url[0].route === 'global') {
         // if it does, push it to the middleware
-        response.middleware.push(...currentRoute.middleware);
+        (_a = response.middleware).push.apply(_a, currentRoute.middleware);
       }
       // check if the route at index i has a method
       else if (!currentRoute.method) {
         // if there is no method, push middleware and break out of the loop
-        response.middleware.push(...currentRoute.middleware);
+        (_b = response.middleware).push.apply(_b, currentRoute.middleware);
         break;
       }
       // otherwise compare the length of the two routes
       else if (currentRoute.url.length === loopLength && currentRoute.method === method) {
         // if they do match, push middleware to middleware array
-        const result = this.compareRoutes(currentRoute, splitRoute, loopLength); // set default parameter for loop length? don't use it if it's a wildcard?
+        var result = this.compareRoutes(currentRoute, splitRoute, loopLength); // set default parameter for loop length? don't use it if it's a wildcard?
         if (result.match) {
-          response.middleware.push(...currentRoute.middleware);
+          (_c = response.middleware).push.apply(_c, currentRoute.middleware);
           if (result.params) response.params = { ...result.params };
         }
       } else if (currentRoute.method === method) {
         // loop through currentRoute and compare each index with splitRoute
-        const result = this.compareRoutes(currentRoute, splitRoute, loopLength);
+        var result = this.compareRoutes(currentRoute, splitRoute, loopLength);
         if (result.match) {
-          response.middleware.push(...currentRoute.middleware);
+          (_d = response.middleware).push.apply(_d, currentRoute.middleware);
           if (result.params) response.params = { ...result.params };
         }
       }
     }
     return response;
-  }
-}
-
+  };
+  return Dirext;
+}());
 module.exports = Dirext;

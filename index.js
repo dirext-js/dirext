@@ -112,7 +112,7 @@ const Dirext = /** @class */ (function () {
       middlewareFuncs[_i - 1] = arguments[_i];
     }
     if (typeof url !== 'string') {
-      middlewareFuncs = [url];
+      middlewareFuncs = __spreadArrays([url], middlewareFuncs);
       url = 'global';
     }
     // array of middleware funcs
@@ -176,4 +176,13 @@ const Dirext = /** @class */ (function () {
   };
   return Dirext;
 }());
+
+const hoidy = new Dirext()
+const middleware1 = () => 'testing1';
+const middleware2 = () => 'testing2';
+const middleware3 = () => 'testing3';
+const middleware4 = () => 'testing4';
+hoidy.use('/hi', middleware2, middleware4);
+console.log(hoidy.routes)
+
 module.exports = Dirext;

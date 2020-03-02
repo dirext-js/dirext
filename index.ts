@@ -93,7 +93,7 @@ class Dirext {
   // method to add middleware to routes without specific http req method
   use(url: string, ...middlewareFuncs: any) {
     if (typeof url !== 'string') {
-      middlewareFuncs = [url];
+      middlewareFuncs = [url, ...middlewareFuncs];
       url = 'global';
     }
     // array of middleware funcs

@@ -46,7 +46,7 @@ class Dirext {
   }
 
 
-  compareRoutes(currentRoute: string, splitRoute: string, loopLength: number) {
+  compareRoutes(currentRoute: object, splitRoute: object, loopLength: number) {
     const response = {
       match: true,
     };

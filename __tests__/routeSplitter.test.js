@@ -24,23 +24,23 @@ test('input string URL with static routes and nested params and return correct a
 });
 
 test('input string URL with static routes and queries and return correct array of objects', () => {
-  expect(router.routeSplitter('/home/?user=user1/posts')).toEqual([{ route: 'home' }, { query: { user: 'user1' } }, { route: 'posts' }]);
-  expect(router.routeSplitter('/home/user/?images=image1/imageId')).toEqual([{ route: 'home' }, { route: 'user' }, { query: { images: 'image1' } }, { route: 'imageId' }]);
-  expect(router.routeSplitter('/?interface=interface1/user/images/imageId')).toEqual([{ query: { interface: 'interface1' } }, { route: 'user' }, { route: 'images' }, { route: 'imageId' }]);
+  expect(router.routeSplitter('/home/posts/?user=user1')).toEqual([{ route: 'home' }, { route: 'posts' }, { query: { user: 'user1' } }]);
+  expect(router.routeSplitter('/home/user/imageId/?images=image1')).toEqual([{ route: 'home' }, { route: 'user' }, { route: 'imageId' }, { query: { images: 'image1' } }]);
+  expect(router.routeSplitter('/user/images/imageId/?interface=interface1')).toEqual([{ route: 'user' }, { route: 'images' }, { route: 'imageId' }, { query: { interface: 'interface1' } }]);
   expect(router.routeSplitter('/testing/jest/dirext/?route=route1')).toEqual([{ route: 'testing' }, { route: 'jest' }, { route: 'dirext' }, { query: { route: 'route1' } }]);
 });
 
 test('input string URL with static routes, params, and queries and return correct array of objects', () => {
-  expect(router.routeSplitter('/home/?user=user1/posts/:postId')).toEqual([{ route: 'home' }, { query: { user: 'user1' } }, { route: 'posts' }, { param: 'postId' }]);
-  expect(router.routeSplitter('/home/user/?images=image1/:imageId/timeStamp')).toEqual([{ route: 'home' }, { route: 'user' }, { query: { images: 'image1' } }, { param: 'imageId' }, { route: 'timeStamp' }]);
-  expect(router.routeSplitter('/?interface=interface1/:user/:userImages/imageId')).toEqual([{ query: { interface: 'interface1' } }, { param: 'user' }, { param: 'userImages' }, { route: 'imageId' }]);
+  expect(router.routeSplitter('/home/posts/:postId/?user=user1')).toEqual([{ route: 'home' }, { route: 'posts' }, { param: 'postId' }, { query: { user: 'user1' } }]);
+  expect(router.routeSplitter('/home/user/:imageId/timeStamp/?images=image1')).toEqual([{ route: 'home' }, { route: 'user' }, { param: 'imageId' }, { route: 'timeStamp' }, { query: { images: 'image1' } }]);
+  expect(router.routeSplitter('/:user/:userImages/imageId/?interface=interface1')).toEqual([{ param: 'user' }, { param: 'userImages' }, { route: 'imageId' }, { query: { interface: 'interface1' } }]);
   expect(router.routeSplitter('/testing/jest/:dirext/?route=route1')).toEqual([{ route: 'testing' }, { route: 'jest' }, { param: 'dirext' }, { query: { route: 'route1' } }]);
 });
 
 test('input string URL with param routes and queries and return correct array of objects', () => {
-  expect(router.routeSplitter('/?user=user1/:posts/:timeStamp')).toEqual([{ query: { user: 'user1' } }, { param: 'posts' }, { param: 'timeStamp' }]);
-  expect(router.routeSplitter('/:user/?images=image1/:imageId')).toEqual([{ param: 'user' }, { query: { images: 'image1' } }, { param: 'imageId' }]);
-  expect(router.routeSplitter('/?interface=interface1/:user/:images')).toEqual([{ query: { interface: 'interface1' } }, { param: 'user' }, { param: 'images' }]);
+  expect(router.routeSplitter('/:posts/:timeStamp/?user=user1')).toEqual([{ param: 'posts' }, { param: 'timeStamp' }, { query: { user: 'user1' } }]);
+  expect(router.routeSplitter('/:user/:imageId/?images=image1')).toEqual([{ param: 'user' }, { param: 'imageId' }, { query: { images: 'image1' } }]);
+  expect(router.routeSplitter('/:user/:images/?interface=interface1')).toEqual([{ param: 'user' }, { param: 'images' }, { query: { interface: 'interface1' } }]);
   expect(router.routeSplitter('/:testing/:jest/:dirext/?route=route1')).toEqual([{ param: 'testing' }, { param: 'jest' }, { param: 'dirext' }, { query: { route: 'route1' } }]);
 });
 
@@ -53,7 +53,7 @@ test('input string URL with static routes and wildcard', () => {
 
 test('input string URL with static routes, params, queries, and wildcard', () => {
   expect(router.routeSplitter('/home/:user/posts/*')).toEqual([{ route: 'home' }, { param: 'user' }, { route: 'posts' }, { route: '*' }]);
-  expect(router.routeSplitter('/?user=user1/:posts/:timeStamp/*')).toEqual([{ query: { user: 'user1' } }, { param: 'posts' }, { param: 'timeStamp' }, { route: '*' }]);
+  expect(router.routeSplitter('/posts/:timeStamp/*')).toEqual([{ route: 'posts' }, { param: 'timeStamp' }, { route: '*' }]);
   expect(router.routeSplitter('/interface/:users/userInfo/*')).toEqual([{ route: 'interface' }, { param: 'users' }, { route: 'userInfo' }, { route: '*' }]);
-  expect(router.routeSplitter('/?interface=interface1/:home/posts/*')).toEqual([{ query: { interface: 'interface1' } }, { param: 'home' }, { route: 'posts' }, { route: '*' }]);
+  expect(router.routeSplitter('/interface/:home/posts/*')).toEqual([{ route: 'interface' }, { param: 'home' }, { route: 'posts' }, { route: '*' }]);
 });

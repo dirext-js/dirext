@@ -22,4 +22,48 @@ function routeSplitter(url) {
   // return array of routes
   return route;
 }
-console.log(routeSplitter('/home/posts/*'));
+
+
+function compareRoutes(currentRoute, splitRoute, loopLength) {
+  let _a;
+  const response = {
+    match: true,
+  };
+  for (let j = 0; j < loopLength; j += 1) {
+    // confirm that all route segment objects hold the same value
+    if (currentRoute.url[j].route && splitRoute[j].route) {
+      if (currentRoute.url[j].route === splitRoute[j].route) {
+        continue;
+      } else if (currentRoute.url[j].route === '*' && splitRoute[j].route !== undefined) {
+        return response;
+      } else {
+        response.match = false;
+        return response;
+      }
+    } else if (currentRoute.url[j].param && splitRoute[j].route) {
+      // if there is a param in url route, save variable and value to params obj
+      const variable = currentRoute.url[j].param;
+      const value = splitRoute[j].route;
+      splitRoute[j].params = (_a = {}, _a[variable] = value, _a);
+      if (!response.params) response.params = {};
+      response.params[variable] = value;
+      // delete route obj now that we know it's a param
+      delete splitRoute[j].route;
+      // store new param object on response
+      continue;
+      // logic for handling wildcard routes
+    } else {
+      response.match = false;
+      return response;
+    }
+  }
+  return response;
+}
+// method to add routes for router to recognize
+console.log(
+  compareRoutes({ url: [{ route: 'home' }, { route: 'profile' }, { route: '*'} ], method: 'GET', middleware: [] }, [{ route: 'home' }, { route: 'nprofile' }, { route: 'data1' }, { route: 'notAddress' }], 3)
+)
+
+
+
+

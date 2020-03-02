@@ -177,14 +177,5 @@ const Dirext = /** @class */ (function () {
   return Dirext;
 }());
 
-const hoidy = new Dirext()
-const middleware1 = () => 'testing1';
-const middleware2 = () => 'testing2';
-const middleware3 = () => 'testing3';
-const middleware4 = () => 'testing4';
-hoidy.set('GET', '/hoidy/:hi', middleware1, middleware2)
-console.log(hoidy.routes);
-console.log(hoidy.find('GET', '/hi/testing'));
-
 
 module.exports = Dirext;

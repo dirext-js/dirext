@@ -1,3 +1,6 @@
+
+
+
 function routeSplitter(url) {
   if (url === '/' || url === '*' || url === 'global') return [{ route: url }];
   // split route on each / then map through elements
@@ -61,7 +64,7 @@ function compareRoutes(currentRoute, splitRoute, loopLength) {
 }
 // method to add routes for router to recognize
 console.log(
-  compareRoutes({ url: [{ route: 'home' }, { route: 'profile' }, { route: '*'} ], method: 'GET', middleware: [] }, [{ route: 'home' }, { route: 'nprofile' }, { route: 'data1' }, { route: 'notAddress' }], 3)
+  routeSplitter('/home/user/posts')
 )
 
 

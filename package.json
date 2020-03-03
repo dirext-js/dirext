@@ -5,8 +5,9 @@
   "main": "index.js",
   "types": "index.d.ts",
   "scripts": {
-    "test": "jest",
-    "compile": "tsc"
+    "setup": "npm install",
+    "build": "tsc lib/index.ts",
+    "test": "jest"
   },
   "repository": {
     "type": "git",

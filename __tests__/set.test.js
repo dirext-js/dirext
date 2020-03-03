@@ -1,4 +1,4 @@
-const Dirext = require('../index.js');
+const Dirext = require('../lib/index.js');
 
 const router = new Dirext();
 

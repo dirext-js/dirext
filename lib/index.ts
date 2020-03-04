@@ -1,25 +1,37 @@
+export {};
 /* eslint-disable class-methods-use-this */
 /* eslint-disable no-continue */
 class Dirext {
   constructor() {
     // an array of routes
+    // @ts-ignore
     this.routes = [];
 
     // binding all HTTP req methods as methods on Dirext using bind and our set method
+          // @ts-ignore
     this.get = this.set.bind(null, 'GET');
+          // @ts-ignore
     this.post = this.set.bind(null, 'POST');
+          // @ts-ignore
     this.put = this.set.bind(null, 'PUT');
+          // @ts-ignore
     this.patch = this.set.bind(null, 'PATCH');
+          // @ts-ignore
     this.delete = this.set.bind(null, 'DELETE');
+          // @ts-ignore
     this.head = this.set.bind(null, 'HEAD');
+          // @ts-ignore
     this.connect = this.set.bind(null, 'CONNECT');
+          // @ts-ignore
     this.options = this.set.bind(null, 'OPTIONS');
+          // @ts-ignore
     this.trace = this.set.bind(null, 'TRACE');
+
   }
 
   // a helper function that takes each segment of route and creates an array of key value pairs
   // edge case for global middleware
-  routeSplitter(url) {
+  routeSplitter(url: string) {
     if (url === '/' || url === '*' || url === 'global') return [{ route: url }];
     // split route on each / then map through elements
     const route = url.split('/').splice(1).map((elem) => {
@@ -31,8 +43,10 @@ class Dirext {
         const queryArr = elem.slice(1).split('&');
         // reduce query arr to an object holding key query which holds key value pairs of queries
         return queryArr.reduce((obj, query) => {
+                // @ts-ignore
           if (!obj.query) obj.query = {};
           const split = query.split('=');
+                // @ts-ignore
           obj.query[split[0]] = split[1];
           return obj;
         }, {});
@@ -45,27 +59,34 @@ class Dirext {
   }
 
 
-  compareRoutes(currentRoute, splitRoute, loopLength = currentRoute.url.length) {
+  compareRoutes(currentRoute: object, splitRoute: object, loopLength: number) {
     const response = {
       match: true,
     };
     for (let j = 0; j < loopLength; j += 1) {
       // confirm that all route segment objects hold the same value
+            // @ts-ignore
       if (currentRoute.url[j].route && splitRoute[j].route) {
+              // @ts-ignore
         if (currentRoute.url[j].route === splitRoute[j].route) {
           continue;
+                // @ts-ignore
         } else if (currentRoute.url[j].route === '*' && splitRoute[j].route !== undefined) {
           return response;
         } else {
           response.match = false;
           return response;
         }
+              // @ts-ignore
       } else if (currentRoute.url[j].param && splitRoute[j].route) {
         // if there is a param in url route, save variable and value to params obj
+                      // @ts-ignore
         const variable = currentRoute.url[j].param;
         const value = splitRoute[j].route;
         splitRoute[j].params = { [variable]: value };
+                      // @ts-ignore
         if (!response.params) response.params = {};
+                      // @ts-ignore
         response.params[variable] = value;
         // delete route obj now that we know it's a param
         delete splitRoute[j].route;
@@ -81,28 +102,30 @@ class Dirext {
   }
 
   // method to add routes for router to recognize
-  set(method, url, ...middlewareFuncs) {
+  set(method: string, url: string, ...middlewareFuncs: any) {
     // array of middleware functions
     const middleware = [...middlewareFuncs];
     // push object with url, method, and middlware to routes
+                  // @ts-ignore
     this.routes.push({ url: this.routeSplitter(url), method, middleware });
     return this;
   }
 
   // method to add middleware to routes without specific http req method
-  use(url, ...middlewareFuncs) {
+  use(url: string, ...middlewareFuncs: any) {
     if (typeof url !== 'string') {
-      middlewareFuncs = [url];
+      middlewareFuncs = [url, ...middlewareFuncs];
       url = 'global';
     }
     // array of middleware funcs
     const middleware = [...middlewareFuncs];
     // push obect with url, method, and middleware to routes
+                  // @ts-ignore
     this.routes.push({ url: this.routeSplitter(url), method: '', middleware });
     return this;
   }
 
-  find(method, url) {
+  find(method: string, url: string) {
     // parse input route using routeSplitter helper function
     const splitRoute = this.routeSplitter(url);
     // initialize empty array to push middleware to
@@ -114,15 +137,19 @@ class Dirext {
     // initialize loopLength variable
     let loopLength;
     // check if input route contains a query at the end
+                  // @ts-ignore
     if (splitRoute[splitRoute.length - 1].query) {
       // assign query object to response object
+                    // @ts-ignore
       response.query = splitRoute[splitRoute.length - 1].query;
       // don't compare last obj in route array
       loopLength = splitRoute.length - 1;
     } else {
       loopLength = splitRoute.length;
     }
+     // @ts-ignore
     for (let i = 0; i < this.routes.length; i += 1) {
+       // @ts-ignore
       const currentRoute = this.routes[i];
       // check if the route at i has a url of "global"
       if (currentRoute.url[0].route === 'global') {
@@ -141,13 +168,15 @@ class Dirext {
         const result = this.compareRoutes(currentRoute, splitRoute, loopLength); // set default parameter for loop length? don't use it if it's a wildcard?
         if (result.match) {
           response.middleware.push(...currentRoute.middleware);
+                        // @ts-ignore
           if (result.params) response.params = { ...result.params };
         }
       } else if (currentRoute.method === method) {
         // loop through currentRoute and compare each index with splitRoute
-        const result = this.compareRoutes(currentRoute, splitRoute);
+        const result = this.compareRoutes(currentRoute, splitRoute, loopLength);
         if (result.match) {
           response.middleware.push(...currentRoute.middleware);
+                        // @ts-ignore
           if (result.params) response.params = { ...result.params };
         }
       }

@@ -1,6 +1,6 @@
 ![DirextLogo](https://i.ibb.co/3CCS8g5/dirextlogo.png)
 
- 🚧 A lightweight routing solution for Node.js. 🚧
+ 🚧 A lightweight routing solution for Node.js. 🚧  [![Build Status](https://travis-ci.org/dirext-js/dirext.svg?branch=master)](https://travis-ci.org/dirext-js/dirext)
 
 ## **Install dirext** 
 `  npm i dirext-js`

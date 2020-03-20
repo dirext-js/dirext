@@ -1,8 +1,8 @@
 {
   "name": "dirext-js",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "description": "A lightweight routing solution for Node.js",
-  "main": "index.js",
+  "main": "lib/index.js",
   "types": "index.d.ts",
   "scripts": {
     "setup": "npm install",

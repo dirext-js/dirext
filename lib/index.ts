@@ -29,7 +29,7 @@ class Dirext {
 
   }
 
-  // a helper function that takes each segment of route and creates an array of key value pairs
+  // a helper function that takes each segment of a route and creates an array of key value pairs
   // edge case for global middleware
   routeSplitter(url: string) {
     if (url === '/' || url === '*' || url === 'global') return [{ route: url }];
